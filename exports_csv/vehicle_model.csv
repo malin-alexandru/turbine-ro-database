@@ -1,0 +1,234 @@
+﻿vehicle_model_id,vehicle_make_id,name,slug
+1,1,A1,a1
+2,1,A3,a3
+3,1,ASeria 3 Cabrio,aseria-3-cabrio
+4,1,A3 Limousine,a3-limousine
+5,1,A3 Sportback,a3-sportback
+6,1,Q2,q2
+7,1,Q3,q3
+8,1,Q3 Sportback,q3-sportback
+9,2,ALHAMBRA,alhambra
+10,2,ALHAMBRA VAN,alhambra-van
+11,2,ATECA,ateca
+12,2,LEON,leon
+13,2,LEON SC,leon-sc
+14,2,LEON ST,leon-st
+15,2,TARRACO,tarraco
+16,3,KAROQ,karoq
+17,3,KODIAQ I,kodiaq-i
+18,3,OCTAVIA III,octavia-iii
+19,3,OCTAVIA III Combi,octavia-iii-combi
+20,3,SUPERB III,superb-iii
+21,3,SUPERB III Estate,superb-iii-estate
+22,4,ARTEON,arteon
+23,4,ARTEON SHOOTING BRAKE,arteon-shooting-brake
+24,4,GOLF ALLTRACK VII Variant,golf-alltrack-vii-variant
+25,4,GOLF SPORTSVAN VII,golf-sportsvan-vii
+26,4,GOLF VAN VII Variant,golf-van-vii-variant
+27,4,GOLF VII,golf-vii
+28,4,GOLF VII Van,golf-vii-van
+29,4,GOLF VII Variant,golf-vii-variant
+30,4,PASSAT ALLTRACK B8 Variant,passat-alltrack-b8-variant
+31,4,PASSAT B8,passat-b8
+32,4,PASSAT B8 Variant,passat-b8-variant
+33,4,SHARAN,sharan
+34,4,T-ROC,t-roc
+35,4,TIGUAN,tiguan
+36,4,TIGUAN ALLSPACE,tiguan-allspace
+37,4,TOURAN,touran
+38,5,Seria 3,seria-3
+39,5,Seria 3 Cabrio,seria-3-cabrio
+40,5,Seria 3 Coupe,seria-3-coupe
+41,5,Seria 3 Break,seria-3-break
+42,5,X3,x3
+43,6,BERLINGO Box Body/MPV,berlingo-box-body-mpv
+44,6,BERLINGO MULTISPACE,berlingo-multispace
+45,6,C2,c2
+46,6,C3 I,c3-i
+47,6,C3 PICASSO,c3-picasso
+48,6,C4 Coupe,c4-coupe
+49,6,C4 GRAND PICASSO I,c4-grand-picasso-i
+50,6,C4 I,c4-i
+51,6,C4 I Saloon,c4-i-saloon
+52,6,C4 PICASSO I MPV,c4-picasso-i-mpv
+53,6,C5 II,c5-ii
+54,6,C5 II Break,c5-ii-break
+55,6,C5 II Estate Van,c5-ii-estate-van
+56,6,C5 III,c5-iii
+57,6,C5 III Break,c5-iii-break
+58,6,XSARA PICASSO,xsara-picasso
+59,7,3,3
+60,7,3 Saloon,3-saloon
+61,8,MINI,mini
+62,8,MINI CLUBMAN,mini-clubman
+63,9,1007,1007
+64,9,206 CC,206-cc
+65,9,206 Hatchback,206-hatchback
+66,9,206 SW,206-sw
+67,9,207,207
+68,9,207 CC,207-cc
+69,9,207 Hatchback Van,207-hatchback-van
+70,9,207 SW,207-sw
+71,9,207 SW Estate Van,207-sw-estate-van
+72,9,3008 I MPV,3008-i-mpv
+73,9,3008 Van,3008-van
+74,9,307,307
+75,9,307 Break,307-break
+76,9,307 SW,307-sw
+77,9,308 CC,308-cc
+78,9,308 I,308-i
+79,9,308 SW I,308-sw-i
+80,9,308 SW I Estate Van,308-sw-i-estate-van
+81,9,407,407
+82,9,407 SW,407-sw
+83,9,5008,5008
+84,9,PARTNER Box Body/MPV,partner-box-body-mpv
+85,9,PARTNER Platform/Chassis,partner-platform-chassis
+86,9,PARTNER TEPEE,partner-tepee
+87,10,CROMA,croma
+88,11,ASTRA H Estate Van,astra-h-estate-van
+89,11,ZAFIRA / ZAFIRA FAMILY B,zafira-zafira-family-b
+90,11,ZAFIRA B Box Body/MPV,zafira-b-box-body-mpv
+91,12,9-Seria 3 Cabrio,9-seria-3-cabrio
+92,12,9-3 Estate,9-3-estate
+93,2,ALTEA,altea
+94,2,ALTEA XL,altea-xl
+95,3,OCTAVIA II,octavia-ii
+96,3,OCTAVIA II Combi,octavia-ii-combi
+97,3,SUPERB II,superb-ii
+98,3,SUPERB II Estate,superb-ii-estate
+99,3,YETI,yeti
+100,4,BEETLE,beetle
+101,4,BEETLE Cabrio,beetle-cabrio
+102,4,CADDY ALLTRACK IV Box Body/MPV,caddy-alltrack-iv-box-body-mpv
+103,4,CADDY ALLTRACK IV MPV,caddy-alltrack-iv-mpv
+104,4,CADDY III Box Body/MPV,caddy-iii-box-body-mpv
+105,4,CADDY III MPV,caddy-iii-mpv
+106,4,CADDY IV Box Body/MPV,caddy-iv-box-body-mpv
+107,4,CADDY IV MPV,caddy-iv-mpv
+108,4,CC B7,cc-b7
+109,4,EOS,eos
+110,4,GOLF PLUS V,golf-plus-v
+111,4,GOLF PLUS Van,golf-plus-van
+112,4,GOLF VAN VI Variant,golf-van-vi-variant
+113,4,GOLF VI,golf-vi
+114,4,GOLF VI Cabrio,golf-vi-cabrio
+115,4,GOLF VI Van,golf-vi-van
+116,4,GOLF VI Variant,golf-vi-variant
+117,4,JETTA IV,jetta-iv
+118,4,PASSAT ALLTRACK B7 Variant,passat-alltrack-b7-variant
+119,4,PASSAT B7,passat-b7
+120,4,PASSAT B7 Estate Van,passat-b7-estate-van
+121,4,PASSAT B7 Variant,passat-b7-variant
+122,4,PASSAT CC B6,passat-cc-b6
+123,4,SCIROCCO III,scirocco-iii
+124,4,SCIROCCO Van,scirocco-van
+125,4,SHARAN Box Body/MPV,sharan-box-body-mpv
+126,4,TIGUAN VAN,tiguan-van
+127,4,TOURAN Box Body/MPV,touran-box-body-mpv
+128,2,TOLEDO II,toledo-ii
+129,3,OCTAVIA I,octavia-i
+130,3,OCTAVIA I Combi,octavia-i-combi
+131,4,BORA I,bora-i
+132,4,BORA Variant,bora-variant
+133,4,GOLF IV,golf-iv
+134,4,GOLF IV Van,golf-iv-van
+135,4,GOLF IV Variant,golf-iv-variant
+136,4,GOLF VAN IV Variant,golf-van-iv-variant
+137,1,TT,tt
+138,1,TT Roadster,tt-roadster
+139,13,C-MAX,c-max
+140,13,C-MAX II,c-max-ii
+141,13,FOCUS C-MAX,focus-c-max
+142,13,FOCUS II,focus-ii
+143,13,FOCUS II Cabrio,focus-ii-cabrio
+144,13,FOCUS II Estate Van,focus-ii-estate-van
+145,13,FOCUS II Saloon,focus-ii-saloon
+146,13,FOCUS II Turnier,focus-ii-turnier
+147,13,FOCUS III,focus-iii
+148,13,FOCUS III Saloon,focus-iii-saloon
+149,13,FOCUS III Turnier,focus-iii-turnier
+150,13,GALAXY I,galaxy-i
+151,13,GALAXY II,galaxy-ii
+152,13,GALAXY MK II VAN,galaxy-mk-ii-van
+153,13,GRAND C-MAX,grand-c-max
+154,13,GRAND C-MAX Van,grand-c-max-van
+155,13,KUGA I,kuga-i
+156,13,KUGA II,kuga-ii
+157,13,MONDEO III,mondeo-iii
+158,13,MONDEO III Saloon,mondeo-iii-saloon
+159,13,MONDEO III Turnier,mondeo-iii-turnier
+160,13,MONDEO IV,mondeo-iv
+161,13,MONDEO IV Saloon,mondeo-iv-saloon
+162,13,MONDEO IV Turnier,mondeo-iv-turnier
+163,13,RANGER,ranger
+164,13,RANGER IV,ranger-iv
+165,13,S-MAX,s-max
+166,13,TOURNEO CONNECT / GRAND TOURNEO CONNECT V761 MPV,tourneo-connect-grand-tourneo-connect-v761-mpv
+167,13,TOURNEO CUSTOM V362 Bus,tourneo-custom-v362-bus
+168,13,TOURNEO CUSTOM V710 Bus,tourneo-custom-v710-bus
+169,13,TRANSIT Bus,transit-bus
+170,13,TRANSIT CONNECT V761 Box Body/MPV,transit-connect-v761-box-body-mpv
+171,13,TRANSIT CUSTOM V362 Bus,transit-custom-v362-bus
+172,13,TRANSIT CUSTOM V362 Van,transit-custom-v362-van
+173,13,TRANSIT CUSTOM V710 Bus,transit-custom-v710-bus
+174,13,TRANSIT CUSTOM V710 Van,transit-custom-v710-van
+175,13,TRANSIT Platform/Chassis,transit-platform-chassis
+176,13,TRANSIT TOURNEO Bus,transit-tourneo-bus
+177,13,TRANSIT V363 Bus,transit-v363-bus
+178,13,TRANSIT V363 Platform/Chassis,transit-v363-platform-chassis
+179,13,TRANSIT V363 Van,transit-v363-van
+180,13,TRANSIT Van,transit-van
+181,14,RANGER Cab & Chassis,ranger-cab-chassis
+182,14,RANGER Extended Cab Pickup,ranger-extended-cab-pickup
+183,14,RANGER Standard Cab Pickup,ranger-standard-cab-pickup
+184,2,TOLEDO III,toledo-iii
+185,4,JETTA III,jetta-iii
+186,4,PASSAT B6,passat-b6
+187,4,PASSAT B6 Variant,passat-b6-variant
+188,1,A1 Sportback,a1-sportback
+189,4,POLO V,polo-v
+190,4,POLO V Hatchback Van,polo-v-hatchback-van
+191,1,A4 Allroad B8,a4-allroad-b8
+192,1,A4 B8,a4-b8
+193,1,A4 B8 Avant,a4-b8-avant
+194,1,A4 B9,a4-b9
+195,1,A5,a5
+196,1,A5 Cabrio,a5-cabrio
+197,1,A5 Sportback,a5-sportback
+198,1,A6 C7,a6-c7
+199,1,A6 C7 Avant,a6-c7-avant
+200,1,Q5,q5
+201,5,Seria 1,seria-1
+202,5,Seria 1 Cabrio,seria-1-cabrio
+203,5,Seria 1 Coupe,seria-1-coupe
+204,5,Seria 5,seria-5
+205,5,5 Break,5-break
+206,5,X1,x1
+207,4,GOLF V,golf-v
+208,4,GOLF V Variant,golf-v-variant
+209,15,ELANTRA III,elantra-iii
+210,15,ELANTRA III Saloon,elantra-iii-saloon
+211,15,HIGHWAY VAN,highway-van
+212,15,SANTA FÉ I,santa-fe-i
+213,15,TRAJET,trajet
+214,15,TUCSON,tucson
+215,15,TUCSON SUV Van,tucson-suv-van
+216,16,CARENS I MPV,carens-i-mpv
+217,16,MAGENTIS II,magentis-ii
+218,16,SPORTAGE II,sportage-ii
+219,16,SPORTAGE II VAN,sportage-ii-van
+220,4,CALIFORNIA T5 Camper,california-t5-camper
+221,4,MULTIVAN T5,multivan-t5
+222,4,TRANSPORTER T5 Bus,transporter-t5-bus
+223,4,"TRANSPORTER T5 Platform/Chassis (7JD, 7JE, 7JL, 7JY, 7JZ, 7F",transporter-t5-platform-chassis-7jd-7je-7jl-7jy-7jz-7f
+224,4,TRANSPORTER T5 Van,transporter-t5-van
+225,1,A6 C6,a6-c6
+226,1,A6 C6 Avant,a6-c6-avant
+227,1,Q5 Van,q5-van
+228,2,EXEO,exeo
+229,2,EXEO ST,exeo-st
+230,5,Seria Seria 3 Cabrio,seria-seria-3-cabrio
+231,5,Seria Seria 3 Coupe,seria-seria-3-coupe
+232,5,Seria Seria 3 Break,seria-seria-3-break
+233,5,Seria 5 Break,seria-5-break

@@ -1,0 +1,11 @@
+__pycache__/
+*.db
+
+# Local source files (not needed for demo pages)
+Foaie de calcul*
+product_images/
+ALL images/
+
+# Utility scripts
+import_vehicle_compatibility.py
+convert_images_to_webp.py

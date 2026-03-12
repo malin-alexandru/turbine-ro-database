@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Filtrare Turbine</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; max-width: 1100px; }
+    h1 { margin-bottom: 8px; }
+    .muted { color: #666; margin-top: 0; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+    .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; flex: 1; min-width: 220px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    select, input { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { text-align: left; border-bottom: 1px solid #eee; padding: 10px 8px; }
+    th { background: #fafafa; }
+    .badge { display: inline-block; background: #eef5ff; color: #1e4ea8; border-radius: 999px; padding: 2px 10px; font-size: 12px; }
+    .info { background: #f8f8f8; border-left: 4px solid #4a76d1; padding: 12px; margin: 10px 0 16px; }
+    .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+    button { padding: 8px 12px; border: 1px solid #bbb; background: #fff; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1>Simulare filtru produse</h1>
+  <p class="muted">Filtrare pe 3 nivele: <strong>Marca -> Model -> Motor</strong>. Datele sunt citite din CSV-urile exportate.</p>
+  <div class="info">
+    <strong>Info SEO (recomandat):</strong><br />
+    URL-ul se actualizeaza live la fiecare selectie (<code>replaceState</code>) pentru UX/share.<br />
+    Cand apesi "Aplica filtre in URL", se salveaza starea finala in istoric (<code>pushState</code>).<br />
+    Indexare recomandata: <code>/marca</code> si <code>/marca/model</code> = index; nivelul cu <code>?motorizare=</code> = de regula noindex.
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <label for="makeSelect">1) Marca</label>
+      <select id="makeSelect"></select>
+    </div>
+    <div class="card">
+      <label for="modelSelect">2) Model</label>
+      <select id="modelSelect"></select>
+    </div>
+    <div class="card">
+      <label for="engineSelect">3) Motor</label>
+      <select id="engineSelect"></select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <label for="turboSearch">Search cod turbo (opțional, fără filtrare compatibilitate)</label>
+      <input id="turboSearch" placeholder="Ex: 04L253010B" />
+    </div>
+  </div>
+
+  <p><span class="badge" id="resultCount">0 produse</span></p>
+  <div class="card" style="margin-bottom: 12px;">
+    <label for="urlPreview">URL propus pentru tehnic</label>
+    <input id="urlPreview" readonly />
+    <div class="actions">
+      <button id="applyUrlBtn" type="button">Aplica filtre in URL</button>
+      <span class="muted" id="seoLevelInfo">Nivel SEO: baza</span>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>SKU</th>
+        <th>Coduri turbo</th>
+        <th>Titlu</th>
+      </tr>
+    </thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+
+  <script>
+    async function fetchText(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error("Nu pot citi: " + path);
+      return await res.text();
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let value = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+
+        if (ch === '"') {
+          if (inQuotes && next === '"') {
+            value += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === "," && !inQuotes) {
+          row.push(value);
+          value = "";
+        } else if ((ch === "\n" || ch === "\r") && !inQuotes) {
+          if (ch === "\r" && next === "\n") i++;
+          if (value !== "" || row.length > 0) {
+            row.push(value);
+            rows.push(row);
+            row = [];
+            value = "";
+          }
+        } else {
+          value += ch;
+        }
+      }
+
+      if (value !== "" || row.length > 0) {
+        row.push(value);
+        rows.push(row);
+      }
+
+      const headers = rows.shift() || [];
+      return rows.map(r => {
+        const o = {};
+        headers.forEach((h, idx) => o[h] = (r[idx] || "").trim());
+        return o;
+      });
+    }
+
+    function setOptions(select, items, getValue, getLabel, placeholder) {
+      select.innerHTML = "";
+      const base = document.createElement("option");
+      base.value = "";
+      base.textContent = placeholder;
+      select.appendChild(base);
+      for (const item of items) {
+        const opt = document.createElement("option");
+        opt.value = getValue(item);
+        opt.textContent = getLabel(item);
+        select.appendChild(opt);
+      }
+    }
+
+    function renderResults(products, targetBody, countEl) {
+      targetBody.innerHTML = "";
+      countEl.textContent = `${products.length} produse`;
+      for (const p of products) {
+        const turboCodes = (p.turbo_codes || []).join(", ");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.product_item_id}</td>
+          <td>${p.sku}</td>
+          <td>${turboCodes}</td>
+          <td>${p.title}</td>
+        `;
+        targetBody.appendChild(tr);
+      }
+    }
+
+    async function main() {
+      const [makes, models, engines, items, mapRows, skuTurboMap, turboCodes] = await Promise.all([
+        fetchText("./exports_csv/vehicle_make.csv").then(parseCSV),
+        fetchText("./exports_csv/vehicle_model.csv").then(parseCSV),
+        fetchText("./exports_csv/vehicle_engine.csv").then(parseCSV),
+        fetchText("./exports_csv/product_item.csv").then(parseCSV),
+        fetchText("./exports_csv/product_item_vehicle_map.csv").then(parseCSV),
+        fetchText("./exports_csv/sku_turbo_code_map.csv").then(parseCSV),
+        fetchText("./exports_csv/turbo_code.csv").then(parseCSV),
+      ]);
+
+      const makeSelect = document.getElementById("makeSelect");
+      const modelSelect = document.getElementById("modelSelect");
+      const engineSelect = document.getElementById("engineSelect");
+      const turboSearch = document.getElementById("turboSearch");
+      const resultsBody = document.getElementById("resultsBody");
+      const resultCount = document.getElementById("resultCount");
+      const urlPreview = document.getElementById("urlPreview");
+      const applyUrlBtn = document.getElementById("applyUrlBtn");
+      const seoLevelInfo = document.getElementById("seoLevelInfo");
+
+      const productById = new Map(items.map(p => [p.product_item_id, p]));
+      const mapByEngineId = new Map();
+      for (const row of mapRows) {
+        const arr = mapByEngineId.get(row.vehicle_engine_id) || [];
+        arr.push(row.product_item_id);
+        mapByEngineId.set(row.vehicle_engine_id, arr);
+      }
+      const engineById = new Map(engines.map(e => [e.vehicle_engine_id, e]));
+      const modelById = new Map(models.map(m => [m.vehicle_model_id, m]));
+      const turboCodeById = new Map(turboCodes.map(tc => [tc.turbo_code_id, tc.code]));
+      const turboCodesBySkuId = new Map();
+      for (const row of skuTurboMap) {
+        const code = turboCodeById.get(row.turbo_code_id) || row.code || "";
+        if (!code) continue;
+        const arr = turboCodesBySkuId.get(row.product_sku_id) || [];
+        arr.push(code);
+        turboCodesBySkuId.set(row.product_sku_id, arr);
+      }
+
+      setOptions(makeSelect, makes, x => x.vehicle_make_id, x => x.name, "Alege marca");
+      setOptions(modelSelect, [], () => "", () => "", "Alege model");
+      setOptions(engineSelect, [], () => "", () => "", "Alege motor");
+
+      function applyResults() {
+        const makeId = makeSelect.value;
+        const modelId = modelSelect.value;
+        const engineId = engineSelect.value;
+
+        // Filtrare progresiva:
+        // - fara selectie: toate produsele
+        // - marca selectata: produse pentru toate motoarele marcii
+        // - model selectat: produse pentru toate motoarele modelului
+        // - motor selectat: produse pentru motorul respectiv
+        const selectedProductIds = new Set();
+        if (engineId) {
+          (mapByEngineId.get(engineId) || []).forEach(id => selectedProductIds.add(id));
+        } else {
+          for (const [engId, productIds] of mapByEngineId.entries()) {
+            const eng = engineById.get(engId);
+            if (!eng) continue;
+            const model = modelById.get(eng.vehicle_model_id);
+            if (!model) continue;
+
+            const matchesMake = !makeId || model.vehicle_make_id === makeId;
+            const matchesModel = !modelId || eng.vehicle_model_id === modelId;
+            if (!matchesMake || !matchesModel) continue;
+
+            productIds.forEach(id => selectedProductIds.add(id));
+          }
+        }
+
+        let products = [...selectedProductIds].map(id => productById.get(id)).filter(Boolean);
+        products = products.map(p => ({
+          ...p,
+          turbo_codes: [...new Set(turboCodesBySkuId.get(p.product_sku_id) || [])],
+        }));
+
+        const q = turboSearch.value.trim().toLowerCase();
+        if (q) {
+          products = products.filter(p => (p.sku || "").toLowerCase().includes(q) || (p.title || "").toLowerCase().includes(q));
+        }
+        renderResults(products, resultsBody, resultCount);
+        updateUrlPreview();
+      }
+
+      function slugify(value) {
+        return (value || "")
+          .toString()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      function buildUrl() {
+        const selectedMake = makes.find(x => x.vehicle_make_id === makeSelect.value);
+        const selectedModel = models.find(x => x.vehicle_model_id === modelSelect.value);
+        const selectedEngine = engines.find(x => x.vehicle_engine_id === engineSelect.value);
+
+        const makeSlug = selectedMake ? selectedMake.slug : "";
+        const modelSlug = selectedModel ? selectedModel.slug : "";
+
+        let url = "/turbina/reconditionata";
+        if (makeSlug) url += `/${makeSlug}`;
+        if (modelSlug) url += `/${modelSlug}`;
+
+        if (selectedEngine) {
+          const motorText = [selectedEngine.engine, selectedEngine.hp ? `${selectedEngine.hp}cp` : "", selectedEngine.engine_code]
+            .filter(Boolean)
+            .join(" ");
+          url += `?motorizare=${encodeURIComponent(slugify(motorText))}`;
+        }
+        return url;
+      }
+
+      function updateSeoLevelInfo(url) {
+        const hasMake = !!makeSelect.value;
+        const hasModel = !!modelSelect.value;
+        const hasEngine = !!engineSelect.value;
+        let msg = "Nivel SEO: baza";
+        if (hasMake && !hasModel) msg = "Nivel SEO: marca (index recomandat)";
+        if (hasMake && hasModel && !hasEngine) msg = "Nivel SEO: marca/model (index recomandat)";
+        if (hasEngine) msg = "Nivel SEO: motorizare (de regula noindex)";
+        seoLevelInfo.textContent = `${msg} | ${url}`;
+      }
+
+      function updateUrlPreview(syncBrowserUrl = true) {
+        const url = buildUrl();
+        urlPreview.value = url;
+        updateSeoLevelInfo(url);
+        if (syncBrowserUrl) {
+          history.replaceState({ source: "live-filter" }, "", url);
+        }
+      }
+
+      makeSelect.addEventListener("change", () => {
+        const selectedMake = makeSelect.value;
+        const modelItems = models.filter(m => m.vehicle_make_id === selectedMake);
+        setOptions(modelSelect, modelItems, x => x.vehicle_model_id, x => x.name, "Alege model");
+        setOptions(engineSelect, [], () => "", () => "", "Alege motor");
+        applyResults();
+      });
+
+      modelSelect.addEventListener("change", () => {
+        const selectedModel = modelSelect.value;
+        const engineItems = engines.filter(e => e.vehicle_model_id === selectedModel);
+        setOptions(
+          engineSelect,
+          engineItems,
+          x => x.vehicle_engine_id,
+          x => `${x.engine} | ${x.hp || "-"} CP | ${x.engine_code}`,
+          "Alege motor"
+        );
+        applyResults();
+      });
+
+      engineSelect.addEventListener("change", applyResults);
+      turboSearch.addEventListener("input", applyResults);
+      applyUrlBtn.addEventListener("click", () => {
+        const url = buildUrl();
+        history.pushState({ source: "applied-filter" }, "", url);
+        updateSeoLevelInfo(url);
+      });
+
+      // Preselectam prima combinatie pentru demo instant.
+      if (makes.length) {
+        makeSelect.value = makes[0].vehicle_make_id;
+        makeSelect.dispatchEvent(new Event("change"));
+        if (modelSelect.options.length > 1) {
+          modelSelect.value = modelSelect.options[1].value;
+          modelSelect.dispatchEvent(new Event("change"));
+        }
+        if (engineSelect.options.length > 1) {
+          engineSelect.value = engineSelect.options[1].value;
+          engineSelect.dispatchEvent(new Event("change"));
+        }
+      }
+      updateUrlPreview(true);
+    }
+
+    main().catch(err => {
+      document.body.insertAdjacentHTML("beforeend", `<p style="color:#b00020;">Eroare: ${err.message}</p>`);
+      console.error(err);
+    });
+  </script>
+</body>
+</html>
