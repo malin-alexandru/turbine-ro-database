@@ -263,18 +263,18 @@
 
         const makeSlug = selectedMake ? selectedMake.slug : "";
         const modelSlug = selectedModel ? selectedModel.slug : "";
-
-        let url = "/turbina/reconditionata";
-        if (makeSlug) url += `/${makeSlug}`;
-        if (modelSlug) url += `/${modelSlug}`;
+        const params = new URLSearchParams();
+        params.set("categorie", "turbina/reconditionata");
+        if (makeSlug) params.set("marca", makeSlug);
+        if (modelSlug) params.set("model", modelSlug);
 
         if (selectedEngine) {
           const motorText = [selectedEngine.engine, selectedEngine.hp ? `${selectedEngine.hp}cp` : "", selectedEngine.engine_code]
             .filter(Boolean)
             .join(" ");
-          url += `?motorizare=${encodeURIComponent(slugify(motorText))}`;
+          params.set("motorizare", slugify(motorText));
         }
-        return url;
+        return `${window.location.pathname}?${params.toString()}`;
       }
 
       function updateSeoLevelInfo(url) {
