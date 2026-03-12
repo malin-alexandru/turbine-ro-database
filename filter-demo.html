@@ -27,8 +27,8 @@
   <p class="muted">Filtrare pe 3 nivele: <strong>Marca -> Model -> Motor</strong>. Datele sunt citite din CSV-urile exportate.</p>
   <div class="info">
     <strong>Info SEO (recomandat):</strong><br />
-    URL-ul se actualizeaza live la fiecare selectie (<code>replaceState</code>) pentru UX/share.<br />
-    Cand apesi "Aplica filtre in URL", se salveaza starea finala in istoric (<code>pushState</code>).<br />
+    URL-ul se actualizeaza live la fiecare selectie.<br />
+    Filtrul trebuie sa functioneze doar in contextul categoriei curente (ex: doar produse din categoria deschisa, nu global).<br />
     Indexare recomandata: <code>/marca</code> si <code>/marca/model</code> = index; nivelul cu <code>?motorizare=</code> = de regula noindex.
   </div>
 
@@ -59,7 +59,6 @@
     <label for="urlPreview">URL propus pentru tehnic</label>
     <input id="urlPreview" readonly />
     <div class="actions">
-      <button id="applyUrlBtn" type="button">Aplica filtre in URL</button>
       <span class="muted" id="seoLevelInfo">Nivel SEO: baza</span>
     </div>
   </div>
@@ -176,7 +175,6 @@
       const resultsBody = document.getElementById("resultsBody");
       const resultCount = document.getElementById("resultCount");
       const urlPreview = document.getElementById("urlPreview");
-      const applyUrlBtn = document.getElementById("applyUrlBtn");
       const seoLevelInfo = document.getElementById("seoLevelInfo");
 
       const productById = new Map(items.map(p => [p.product_item_id, p]));
@@ -202,7 +200,7 @@
       setOptions(modelSelect, [], () => "", () => "", "Alege model");
       setOptions(engineSelect, [], () => "", () => "", "Alege motor");
 
-      function applyResults() {
+      async function applyResults() {
         const makeId = makeSelect.value;
         const modelId = modelSelect.value;
         const engineId = engineSelect.value;
@@ -238,7 +236,11 @@
 
         const q = turboSearch.value.trim().toLowerCase();
         if (q) {
-          products = products.filter(p => (p.sku || "").toLowerCase().includes(q) || (p.title || "").toLowerCase().includes(q));
+          products = products.filter(p =>
+            (p.sku || "").toLowerCase().includes(q) ||
+            (p.title || "").toLowerCase().includes(q) ||
+            (p.turbo_codes || []).some(code => (code || "").toLowerCase().includes(q))
+          );
         }
         renderResults(products, resultsBody, resultCount);
         updateUrlPreview();
@@ -318,25 +320,9 @@
 
       engineSelect.addEventListener("change", applyResults);
       turboSearch.addEventListener("input", applyResults);
-      applyUrlBtn.addEventListener("click", () => {
-        const url = buildUrl();
-        history.pushState({ source: "applied-filter" }, "", url);
-        updateSeoLevelInfo(url);
-      });
 
-      // Preselectam prima combinatie pentru demo instant.
-      if (makes.length) {
-        makeSelect.value = makes[0].vehicle_make_id;
-        makeSelect.dispatchEvent(new Event("change"));
-        if (modelSelect.options.length > 1) {
-          modelSelect.value = modelSelect.options[1].value;
-          modelSelect.dispatchEvent(new Event("change"));
-        }
-        if (engineSelect.options.length > 1) {
-          engineSelect.value = engineSelect.options[1].value;
-          engineSelect.dispatchEvent(new Event("change"));
-        }
-      }
+      // Default: filtre ne-selectate.
+      applyResults();
       updateUrlPreview(true);
     }
 
